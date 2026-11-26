@@ -1,5 +1,14 @@
 # synth500：500 道开发者智能体题（轻量版）
 
+> **English summary.**
+>
+> - **What it is:** 500 software-engineering tasks for developer agents, in the same format as the reference tasks of the Kaggle "Gemma 4 Developer Agent" competition (`tasks.jsonl`, `task-index.jsonl`, `snapshots/<instance_id>.tgz`).
+> - **Source and validation:** the tasks come from merged pull requests of fastapi, rich, httpx and requests. Each one was validated offline: with the test patch alone, 2 runs fail; with the reference patch added, 3 runs pass. 454 of them also pass a strict, official-style check.
+> - **Snapshots:** the 36 GB of repository snapshots are not stored here. Run `python3 rebuild_snapshots.py` (git ≥ 2.32, Python ≥ 3.8, no network needed) to rebuild them from the four git bundles in `bundles/`; every snapshot is checked against `snapshot_manifest.jsonl`.
+> - **License:** our own files (script, validation records, manifest, docs) are MIT-licensed. Code, patches and PR texts from the upstream repositories stay under their own licenses (MIT, MIT, BSD-3-Clause, Apache-2.0).
+>
+> The rest of this README is in Chinese.
+
 本仓库收录了 500 道「读题面 → 改代码 → 跑测试验收」的题目，格式与 Kaggle「Gemma 4 Developer Agent」比赛官方提供的参考题相同。
 
 - **来源**：fastapi、rich、httpx、requests 四个开源仓库在 GitHub 上已合并的 PR。
@@ -33,6 +42,7 @@ python3 rebuild_snapshots.py --jobs 4
 | `snapshot_manifest.jsonl` | 每份快照的 HEAD 提交号、文件树哈希和提交数，重建脚本用它逐题核对 |
 | `rebuild_snapshots.py` | 从 bundle 重建快照的脚本 |
 | `bundles.sha256` | 4 个 bundle 的 SHA-256 校验值 |
+| `LICENSE` | MIT 许可证，只覆盖本仓库自己的部分（见「来源与许可」） |
 | `bundles/{fastapi,rich,httpx,requests}.bundle` | 4 个仓库的 git 历史，只包含这 500 道题需要的部分，每道题的基底提交对应一个引用 `refs/tasks/<instance_id>` |
 
 `tasks.jsonl` 的字段：
@@ -152,3 +162,15 @@ open('tasks.strict.jsonl', 'w').writelines(l for l in open('tasks.jsonl') if jso
 | [psf/requests](https://github.com/psf/requests) | Apache-2.0 |
 
 `problem_statement` 是各 PR 的标题和正文原文，作者为对应 PR 的提交者，原文可以通过 `validation.jsonl` 里的 `source_pr` 链接查看。
+
+**本仓库自己的部分**按 MIT 许可证发布，见 [LICENSE](LICENSE)，包括：
+
+- 重建脚本 `rebuild_snapshots.py`；
+- `validation.jsonl`、`snapshot_manifest.jsonl`、`bundles.sha256`；
+- 本 README。
+
+来自上游仓库的内容不在此列，仍归原作者所有，按上表中各自的许可证使用，包括：
+
+- 代码、补丁和快照内容；
+- bundle 里的提交历史；
+- PR 标题和正文。
