@@ -1,0 +1,4 @@
+snapshots/
+rebuild_report.jsonl
+__pycache__/
+tasks.strict.jsonl
